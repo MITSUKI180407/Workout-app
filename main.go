@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
 	var bodyPart string
@@ -10,6 +13,14 @@ func main() {
 	var sets int
 
 	fmt.Println("筋トレ記録アプリ")
+	data, err := os.ReadFile("records.csv")
+	if err == nil {
+		fmt.Println("\n--- 過去の記録 ---")
+		fmt.Print(string(data))
+		fmt.Println("------------------")
+	} else if !os.IsNotExist(err) {
+		fmt.Println("過去の記録を読み込めませんでした")
+	}
 	fmt.Print("鍛えたい部位を入力してください（胸・背中・脚）：")
 	fmt.Scan(&bodyPart)
 	switch bodyPart {
