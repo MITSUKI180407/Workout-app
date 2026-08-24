@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
 	var bodyPart string
@@ -34,6 +37,13 @@ func main() {
 
 	fmt.Print("セット数を入力してください：")
 	fmt.Scan(&sets)
+	file, err := os.OpenFile("records.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println("記録の保存に失敗しました")
+		return
+	}
+	defer file.Close()
 
+	fmt.Fprintf(file, "%s,%.1f,%d,%d\n", exercise, weight, reps, sets)
 	fmt.Printf("%sを%.1fkgで%d回×%dセット記録しました！\n", exercise, weight, reps, sets)
 }
